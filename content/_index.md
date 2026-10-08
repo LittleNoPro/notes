@@ -4,7 +4,11 @@
 
 ## About Me
 
-I am an Information Security student at UIT with a strong interest in  **Blueteam, SOC, networking, system security** and **infrastructure**.
+I am an Information Security student at UIT with a strong interest in  **Blueteam, Networking** and **System Security**.
+
+
+If you want to know about my **Cryptography skills**, look at this: https://littlenopro.github.io/
+
 
 This blog is where I document what I learn, what I build, and the lessons I pick up through hands-on practice and continuous study.
 
