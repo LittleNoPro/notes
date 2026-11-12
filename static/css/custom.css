@@ -261,3 +261,21 @@
     min-width: 7rem;
   }
 }
+
+/* Copy button lives on .code-wrapper (see static/js/script.js) so it stays
+   pinned to the top-right corner while a long line is scrolled horizontally.
+   The extra right padding keeps the end of the first line clear of it. */
+.code-wrapper {
+  position: relative;
+}
+
+.content .code-wrapper > pre {
+  margin-bottom: 0; /* spacing now comes from the wrapper / .highlight */
+  padding-right: 3rem;
+}
+
+/* Theme draws the button at opacity 0.7, which lets code on a long first line
+   bleed through it. Keep it solid so it reads as a button over the text. */
+.code-wrapper > button.copy-button {
+  opacity: 1;
+}

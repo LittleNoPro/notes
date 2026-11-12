@@ -36,7 +36,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    block.appendChild(copyButton);
+    // Mount the button on a non-scrolling wrapper, not on the <pre> itself:
+    // <pre> has overflow-x: auto, so an absolutely positioned child scrolls
+    // with the code and ends up covering characters mid-line.
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("code-wrapper");
+    block.parentNode.insertBefore(wrapper, block);
+    wrapper.appendChild(block);
+    wrapper.appendChild(copyButton);
   });
 });
 
