@@ -239,12 +239,15 @@
    and shell variables (`nv`). No rule is needed here - the palette in
    syntax.scss already styles those classes in both light and dark mode. */
 
-.content p:has(> img:only-child) {
-  text-align: center;
-}
-
-.content p > img:only-child {
-  display: inline-block;
+/* Images inside a paragraph are rendered as centered blocks. An image written
+   on the line right after some text (no blank line between) lands in the same
+   <p> as that text; the theme justifies <p> and the inline image forced a line
+   break, so the text line before it was stretched with huge word gaps. As a
+   block, the image splits that text into its own anonymous block whose last
+   line is not justified. `:only-child` cannot tell those cases apart, since it
+   ignores text nodes, so the rule applies to every image in a paragraph. */
+.content p > img {
+  display: block;
   height: auto;
   margin: 1rem auto;
   max-width: 100%;
@@ -278,4 +281,26 @@
    bleed through it. Keep it solid so it reads as a button over the text. */
 .code-wrapper > button.copy-button {
   opacity: 1;
+}
+
+/* Collapsible Q&A blocks (<details>) inside a post, e.g. self-check questions.
+   The table of contents also uses <details> but sits outside .content. */
+.content details {
+  margin: 0.5rem 0;
+  padding: 0.4rem 0.8rem;
+  border-left: 3px solid currentColor;
+  border-left-color: rgba(127, 127, 127, 0.4);
+}
+
+.content details > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.content details[open] > summary {
+  margin-bottom: 0.5rem;
+}
+
+.content details > p:last-child {
+  margin-bottom: 0;
 }
