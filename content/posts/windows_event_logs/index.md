@@ -712,16 +712,18 @@ Log **System**, lọc `104`. Tab General ghi rõ **tên log bị xóa** (`Window
 
 Suốt Bước 2 mình đã ghi lại thời điểm của từng event trong lúc điều tra. Bước này không cần tìm thêm gì — chỉ gom các mốc đó lại, sắp theo thời gian, là ra **một dòng sự kiện** đọc từ trên xuống thành câu chuyện. Đây mới là sản phẩm chính của báo cáo sự cố:
 
-| Thời điểm | Event | Log | Diễn giải |
-|---|---|---|---|
-| 12:38:31 – 12:38:43 | 4625 ×32 | Security | Brute force `labuser` từ `10.0.2.128` — SubStatus `0xC000006A`: đúng user, sai mật khẩu |
-| 12:38:45 | 4624 (Type 3) | Security | Đăng nhập thành công `labuser` từ `10.0.2.128` — **máy bị chiếm** |
-| 12:39:03 | 7045 | System | Service lạ `waKU` (`UpPVIJsf.exe`) — PsExec thực thi từ xa |
-| 12:39:51 | 4720 + 4688 | Security | Tạo `support01` (`net user support01 'Supp0rt-Lab!' /add`) |
-| 12:39:57 | 4732 + 4688 | Security | Thêm `support01` vào `Administrators` (`net localgroup administrators support01 /add`) |
-| 12:40:48 | 4698 | Security | Tạo scheduled task `\OneDrive Update Check` |
-| 12:41:00 | 4104 | PowerShell/Operational | Payload giải mã: `Write-Output 'lab-test' \| Out-File C:\Users\Public\lab.txt` |
-| 12:41:22 | 104 | System | Xóa log `Windows PowerShell` — xóa dấu vết |
+| Thời điểm | Event | Log | Diễn giải | MITRE ATT&CK |
+|---|---|---|---|---|
+| 12:38:31 – 12:38:43 | 4625 ×32 | Security | Brute force `labuser` từ `10.0.2.128` — SubStatus `0xC000006A`: đúng user, sai mật khẩu | [T1110.001 — Brute Force: Password Guessing](https://attack.mitre.org/techniques/T1110/001/) |
+| 12:38:45 | 4624 (Type 3) | Security | Đăng nhập thành công `labuser` từ `10.0.2.128` — **máy bị chiếm** | [T1078.003 — Valid Accounts: Local Accounts](https://attack.mitre.org/techniques/T1078/003/) |
+| 12:39:03 | 7045 | System | Service lạ `waKU` (`UpPVIJsf.exe`) — PsExec thực thi từ xa | [T1569.002 — System Services: Service Execution](https://attack.mitre.org/techniques/T1569/002/) |
+| 12:39:51 | 4720 + 4688 | Security | Tạo `support01` (`net user support01 'Supp0rt-Lab!' /add`) | [T1136.001 — Create Account: Local Account](https://attack.mitre.org/techniques/T1136/001/) |
+| 12:39:57 | 4732 + 4688 | Security | Thêm `support01` vào `Administrators` (`net localgroup administrators support01 /add`) | [T1098.007 — Account Manipulation: Additional Local or Domain Groups](https://attack.mitre.org/techniques/T1098/007/) |
+| 12:40:48 | 4698 | Security | Tạo scheduled task `\OneDrive Update Check` | [T1053.005 — Scheduled Task/Job: Scheduled Task](https://attack.mitre.org/techniques/T1053/005/) |
+| 12:41:00 | 4104 | PowerShell/Operational | Payload giải mã: `Write-Output 'lab-test' \| Out-File C:\Users\Public\lab.txt` | [T1059.001 — Command and Scripting Interpreter: PowerShell](https://attack.mitre.org/techniques/T1059/001/) |
+| 12:41:22 | 104 | System | Xóa log `Windows PowerShell` — xóa dấu vết | [T1070.001 — Indicator Removal: Clear Windows Event Logs](https://attack.mitre.org/techniques/T1070/001/) |
+
+*Ghi chú:* cột MITRE ATT&CK ánh xạ mỗi event với kỹ thuật mà nó phơi bày. Một event có thể liên hệ nhiều kỹ thuật; ở đây chỉ nêu kỹ thuật chính tương ứng với từng hành động trong lab.
 
 Tất cả đều rạng sáng **20/11/2026**. Đọc dọc bảng là thấy đủ các pha của một vụ xâm nhập: **dò mật khẩu → vào được → thực thi từ xa → lập tài khoản backdoor → cắm persistence → xóa dấu**. Mỗi dòng neo vào một event có thật, kèm IP, tài khoản hoặc lệnh cụ thể — đó là chỗ khác nhau giữa một báo cáo sự cố và một phỏng đoán.
 
